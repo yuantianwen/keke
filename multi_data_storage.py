@@ -17,6 +17,11 @@ def xlsx_open():
 		workbook = xw.Book(xlsx_filename)	
 
 
+def xlsx_read(sheetname):
+	sht = workbook.sheets(sheetname)
+	print(sht.range('A:A').value)		
+
+
 def xlsx_write_row_data(col_value_list,type):
 	global workbook
 	global g_row	
