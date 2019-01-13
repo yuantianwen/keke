@@ -23,7 +23,6 @@ def content():
 
 @app.route("/like",methods=['GET','POST'])
 def like():
-	
 	if request.method == 'GET':
 		catid = request.args["catid"]
 		userid = request.args["userid"]
@@ -38,7 +37,24 @@ def like():
 			userid=request.form["userid"]
 			sentenceid=request.form["sentenceid"]
 	likeacount= updateAndGetLikeAcount(catid,sentenceid,userid)
+	return str(likeacount)
 
+@app.route("/favorite",methods=['GET','POST'])
+def favorite():
+	if request.method == 'GET':
+		catid = request.args["catid"]
+		userid = request.args["userid"]
+		sentenceid = request.args["sentenceid"]
+	elif request.method == 'POST':
+		if request.mimetype=='application/json':
+			catid=request.json["catid"]
+			userid=request.json["userid"]
+			sentenceid = request.json["sentenceid"]
+		elif request.mimetype=='application/form':
+			catid=request.form["catid"]
+			userid=request.form["userid"]
+			sentenceid=request.form["sentenceid"]
+	likeacount= updateAndGetFavorite(catid,sentenceid,userid)
 	return str(likeacount)
 
 # 获取目录列表

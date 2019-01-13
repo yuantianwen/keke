@@ -61,6 +61,23 @@ def updateAndGetLikeAcount(catid,sentenceid,userid):
 	conn.commit()
 	return(likeacount)
 
+def updateAndGetFavorite(catid,sentenceid,userid):
+	favorite = 0
+	sql="select favorite from t_like where userid=%s and catid =%s and sentenceid =%s"%(userid,catid,sentenceid)
+	
+	cur = conn.execute(sql)
+	row = cur.fetchone()
+	if row != None:	
+		favorite = row[0]
+	print(favorite)
+
+	# 收藏
+	likeacount +=1
+	sql="REPLACE INTO t_like(userid,catid,sentenceid,likeacount) values(%d,%d,%d,%d)"%(userid,catid,sentenceid,likeacount)
+	print(sql)
+	conn.execute(sql)
+	conn.commit()
+	return(likeacount)
 def db_close():
 	global conn;
 	if not conn == None:
