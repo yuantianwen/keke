@@ -7,20 +7,17 @@ body {
     margin: 0px 10px;
     width: auto;
     height: 100vh;
-    background: #aaa;
-    border: 1px solid black;
 }
 
 #main {
-	height: 100%;
+	/*height: 100%;*/
     display: grid;
     grid-template-columns: 160px 1fr;
-    grid-template-rows: 100px auto 40px;
+    grid-template-rows: 40px auto 40px;
     grid-template-areas:
         'header header'
         'aside section'
         'footer footer';
-    border: 1px solid red;
 }
 
 header {
@@ -28,14 +25,19 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     width: 100%;
-    border-bottom: 2px solid black;
 }
 
 aside {
+    height: calc(100vh - 80px);
     grid-area: aside;
     height: auto;
-    border-right: 2px solid green;
+    background: #f3f3f3;
+
+    padding: 5px 5px;
+    font-size: 12px;
+    line-height: 1.5em;
 }
 
 section {
@@ -44,12 +46,13 @@ section {
     flex-direction: column;
     flex-shrink: unset;
     overflow:auto;
+
+    border: 1px dotted #f3f3f3;
 }
 
 footer {
     grid-area: footer;
     text-align: center;
-    border-top: 2px solid black;
 
 }
 
@@ -109,3 +112,15 @@ aside ul {
 a{
     text-decoration: none;
 }
+
+ .favorite_on{
+    color:yellow;
+ }
+
+ .favorite_off{
+    color:#fff;
+ }
+
+ .font_align_center{
+    text-align: center;
+ }

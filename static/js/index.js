@@ -31,13 +31,38 @@ function like_click(catid, sentenceid, userid) {
     console.log(catid, sentenceid, userid);
     $.ajax({
         type: "post",
-        url: "http://127.0.0.1/like",
+        url: "/like",
         data: JSON.stringify({ 'catid': catid, 'sentenceid': sentenceid, 'userid': userid }),
         contentType: "application/json",
         datatype: "text",
         success: function(data) {
             console.log(data);
-            $("span[id="+sentenceid+"]").text("("+data+")")
+            $("span[id="+catid+"_"+sentenceid+"]").text("("+data+")")
+        }, 
+        error: function(jqXHR) {
+            console.log("Error:" + jqXHR.status);
+        }
+    });
+}
+
+function favorite_click(catid, sentenceid, userid) {
+
+    console.log(catid, sentenceid, userid);
+    $.ajax({
+        type: "post",
+        url: "/favorite",
+        data: JSON.stringify({ 'catid': catid, 'sentenceid': sentenceid, 'userid': userid }),
+        contentType: "application/json",
+        datatype: "text",
+        success: function(data) {
+            console.log(data);
+            $("i[id=favorite_"+catid+"_"+sentenceid+"]").removeClass("favorite_on")
+            $("i[id=favorite_"+catid+"_"+sentenceid+"]").removeClass("favorite_off")
+            if (data==0) {
+                 $("i[id=favorite_"+catid+"_"+sentenceid+"]").addClass("favorite_off")
+            } else {
+                $("i[id=favorite_"+catid+"_"+sentenceid+"]").addClass("favorite_on")
+            }
         }, 
         error: function(jqXHR) {
             console.log("Error:" + jqXHR.status);
@@ -56,7 +81,7 @@ function a_click(s) {
 function get_content(catname) {
     $.ajax({
         type: "get",
-        url: "http://127.0.0.1/content?catname=" + catname + "&userid=admin",
+        url: "/content?catname=" + catname + "&userid=admin",
         datatype: "json",
         success: function(data) {
             parsedJson = $.parseJSON(data);
@@ -71,19 +96,27 @@ function get_content(catname) {
                     zh = value["zh"]
                     en = value["en"]
                     likeacount = value["likeacount"]
+                    favorite = value["favorite"]
+                    if (favorite==1) {
+                        i_html='<i id="favorite_'+catid+'_'+sentenceid+'" class="fa fa-star fa-1x favorite_on" aria-hidden="true"></i>'
+                    }
+                   
+                else {i_html='<i id="favorite_'+catid+'_'+sentenceid+'" class="fa fa-star fa-1x favorite_off" aria-hidden="true"></i>'
+                  }
+
                     html += '<p>' + sentenceid + ':' + zh + '</p>' +
                             '<p>' + en + 
                             	// 点赞 or 打卡
                             	'<a class="btn btn-danger like_button" href="#" onclick="like_click(' + catid + ',' + sentenceid + ',1);return false;">'+
                                 //'<button class="like_button" onclick="like_click(' + catid + ',' + sentenceid + ',1)">'+
                                 	'<i class="fa fa-thumbs-up fa-1x" aria-hidden="true"></i>'+
-                                	'<span id='+ sentenceid +'>(' + likeacount + ')</span>' +
+                                	'<span id='+catid+'_'+sentenceid +'>(' + likeacount + ')</span>' +
                                  '</a>'+
                                 // '</button>' +
                                  // 收藏 
                                 //'<button class="like_button" onclick="favorite_click(' + catid + ',' + sentenceid + ',1)">'+
                                 '<a class="btn btn-danger like_button" href="#" onclick="favorite_click(' + catid + ',' + sentenceid + ',1)">'+
-                                	'<i class="fa fa-star fa-1x" aria-hidden="true"></i>'+
+                                	i_html +
                                 '</a>'+
                                  //'</button>' + 
                              '</p>'
@@ -105,7 +138,7 @@ function get_content(catname) {
 function catalog_load() {
     $.ajax({
         type: "get",
-        url: "http://127.0.0.1/catalog",
+        url: "/catalog",
         datatype: "json",
         success: function(data) {
             html = "<ul>";

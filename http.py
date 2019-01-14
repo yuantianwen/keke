@@ -2,7 +2,7 @@
 #coding=utf-8
 from flask  import Flask;
 from flask import url_for,request,jsonify,abort
-from db import getCatalogList,getContent,updateAndGetLikeAcount
+from db import getCatalogList,getContent,updateAndGetLikeAcount,updateAndGetFavorite
 
 app = Flask(__name__)
 
@@ -54,8 +54,8 @@ def favorite():
 			catid=request.form["catid"]
 			userid=request.form["userid"]
 			sentenceid=request.form["sentenceid"]
-	likeacount= updateAndGetFavorite(catid,sentenceid,userid)
-	return str(likeacount)
+	favorite= updateAndGetFavorite(catid,sentenceid,userid)
+	return str(favorite)
 
 # 获取目录列表
 def catalog_list():
